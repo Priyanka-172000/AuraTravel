@@ -1,0 +1,106 @@
+.container {
+  width: 100%;
+  padding-bottom: var(--spacing-16);
+}
+
+.header {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  padding: var(--spacing-16) 0;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: var(--font-size-4xl);
+  margin-bottom: var(--spacing-4);
+}
+
+.header p {
+  color: var(--color-text-light);
+  font-size: var(--font-size-lg);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.content {
+  margin-top: var(--spacing-12);
+  max-width: 900px;
+}
+
+.section {
+  text-align: center;
+  margin-bottom: var(--spacing-16);
+}
+
+.section h2 {
+  font-size: var(--font-size-3xl);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-6);
+}
+
+.section p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-8);
+  margin-bottom: var(--spacing-16);
+}
+
+.featureCard {
+  background-color: var(--color-surface-elevated);
+  padding: var(--spacing-8);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: rgba(0, 102, 255, 0.1);
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-6);
+}
+
+.featureCard h3 {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-4);
+}
+
+.featureCard p {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.bottomSection {
+  background-color: var(--color-surface-elevated);
+  padding: var(--spacing-12);
+  border-radius: var(--radius-xl);
+  text-align: center;
+}
+
+.bottomSection h2 {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-6);
+}
+
+.bottomSection p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 0 auto;
+}
