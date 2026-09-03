@@ -207,3 +207,99 @@
 .modalWeather {
   margin-top: var(--spacing-4);
 }
+
+/* Search Input Styles */
+.searchForm {
+  display: flex;
+  margin-bottom: var(--spacing-4);
+  gap: var(--spacing-2);
+}
+
+.searchInput {
+  flex: 1;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+}
+
+.searchBtn {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast);
+}
+
+.searchBtn:hover {
+  background-color: var(--color-secondary);
+}
+
+.searchBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin: var(--spacing-4) 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.divider:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.divider:not(:empty)::after {
+  margin-left: .25em;
+}
+
+.useMyLocBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+  margin-bottom: var(--spacing-6);
+}
+
+.useMyLocBtn:hover {
+  background-color: var(--color-background);
+  color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+
+.errorActions { margin-top: var(--spacing-4); border-top: 1px solid var(--color-border); padding-top: var(--spacing-4); }
+.contactBtn, .aiBtn { padding: var(--spacing-2) var(--spacing-4); border-radius: var(--radius-md); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); cursor: pointer; transition: all var(--transition-fast); text-decoration: none; display: inline-block; }
+.contactBtn { background: transparent; border: 1px solid var(--color-primary); color: var(--color-primary); }
+.contactBtn:hover { background: rgba(0, 102, 255, 0.1); }
+.aiBtn { background: var(--color-secondary); border: 1px solid var(--color-secondary); color: white; }
+.aiBtn:hover { background: var(--color-secondary-hover); }

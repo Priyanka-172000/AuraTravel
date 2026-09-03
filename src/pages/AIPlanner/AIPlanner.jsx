@@ -45,20 +45,6 @@ const AIPlanner = () => {
     e.preventDefault();
     if (!formData.destination.trim()) return;
 
-    if (!import.meta.env.VITE_GEMINI_API_KEY) {
-      setLoading(true);
-      setError(null);
-      setItinerary(null);
-      
-      const numDays = parseInt(formData.days);
-      const mockData = getMockItinerary(formData.destination, numDays, formData.interests);
-      
-      const enrichedData = await loadItineraryImages(mockData);
-      setItinerary(enrichedData);
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
     setError(null);
     setItinerary(null);

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, SlidersHorizontal, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { destinationsData } from '../../data/destinations';
@@ -6,6 +7,7 @@ import DestinationCard from '../../components/DestinationCard/DestinationCard';
 import styles from './Destinations.module.css';
 
 const Destinations = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -23,7 +25,21 @@ const Destinations = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div className="container">
+        <div className={styles.videoWrapper}>
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            preload="auto"
+            className={styles.headerVideo}
+            poster="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=2000&q=80"
+          >
+            <source src="/videos/travel-hero.mp4" type="video/mp4" />
+          </video>
+          <div className={styles.overlay}></div>
+        </div>
+        <div className={`container ${styles.headerContent}`}>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -89,11 +105,19 @@ const Destinations = () => {
         ) : (
           <div className={styles.emptyState}>
             <MapPin size={48} className={styles.emptyIcon} />
-            <h3>No destinations found</h3>
-            <p>We couldn't find any destinations matching your search criteria. Try adjusting your filters.</p>
-            <button className={styles.resetBtn} onClick={() => { setSearchTerm(''); setSelectedCategory('All'); }}>
-              Reset Filters
-            </button>
+            <h3>Destination Not Found</h3>
+            <p>
+              The city you are looking for is not listed in our current plans. 
+              Please contact us so we can guide you and help plan a trip to your chosen place!
+            </p>
+            <div className={styles.emptyActions}>
+              <button className={styles.resetBtn} onClick={() => { setSearchTerm(''); setSelectedCategory('All'); }}>
+                Reset Filters
+              </button>
+              <button onClick={() => navigate('/contact')} className={styles.contactBtn}>
+                Contact Us
+              </button>
+            </div>
           </div>
         )}
       </div>

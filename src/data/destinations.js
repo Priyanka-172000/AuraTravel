@@ -8,7 +8,7 @@ export const destinationsData = [
     image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80",
     bestTime: "April to June, or September to October",
     recommendedDays: 4,
-    categories: ["Romance", "Culture", "City"],
+    categories: ["Romance", "Culture", "City", "Luxury"],
     coordinates: { lat: 48.8566, lon: 2.3522 },
     famousPlaces: [
       { name: "Eiffel Tower", description: "Iconic iron lattice tower", category: "Landmark", query: "eiffel tower", image: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=800&q=80" },
@@ -25,7 +25,7 @@ export const destinationsData = [
     image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1200&q=80",
     bestTime: "March to April, or September to November",
     recommendedDays: 5,
-    categories: ["Culture", "City", "Food"],
+    categories: ["Culture", "City", "Entertainment"],
     coordinates: { lat: 35.6762, lon: 139.6503 },
     famousPlaces: [
       { name: "Senso-ji", description: "Ancient Buddhist temple", category: "Temple", query: "sensoji temple", image: "https://images.unsplash.com/photo-1532236204992-f5e85c024202?auto=format&fit=crop&w=800&q=80" },
@@ -42,7 +42,7 @@ export const destinationsData = [
     image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80",
     bestTime: "April to October",
     recommendedDays: 7,
-    categories: ["Nature", "Beach", "Relaxation"],
+    categories: ["Nature", "Beach", "Relaxation", "Romance"],
     coordinates: { lat: -8.4095, lon: 115.1889 },
     famousPlaces: [
       { name: "Uluwatu Temple", description: "Cliff-edge sea temple", category: "Temple", query: "uluwatu temple", image: "https://upload.wikimedia.org/wikipedia/commons/5/57/Pura_Luhur_Uluwatu_2017-08-17_%2834%29.jpg" },
@@ -76,7 +76,7 @@ export const destinationsData = [
     image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80",
     bestTime: "October to April",
     recommendedDays: 4,
-    categories: ["History", "Culture", "City"],
+    categories: ["History", "Culture", "City", "Romance"],
     coordinates: { lat: 41.9028, lon: 12.4964 },
     famousPlaces: [
       { name: "Colosseum", description: "Ancient gladiatorial arena", category: "Historic Site", query: "colosseum rome", image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80" },
@@ -93,12 +93,12 @@ export const destinationsData = [
     image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
     bestTime: "November to March",
     recommendedDays: 4,
-    categories: ["Luxury", "City", "Shopping"],
+    categories: ["Luxury", "City", "Entertainment"],
     coordinates: { lat: 25.2048, lon: 55.2708 },
     famousPlaces: [
       { name: "Burj Khalifa", description: "World's tallest building", category: "Landmark", query: "burj khalifa", image: "https://images.unsplash.com/photo-1528702748617-c64d49f918af?auto=format&fit=crop&w=800&q=80" },
       { name: "Palm Jumeirah", description: "Artificial archipelago", category: "Landmark", query: "palm jumeirah", image: "https://upload.wikimedia.org/wikipedia/commons/3/30/Artificial_Archipelagos%2C_Dubai%2C_United_Arab_Emirates_ISS022-E-024940_lrg_%28cropped%29.jpg" },
-      { name: "Dubai Mall", description: "Massive shopping and leisure destination", category: "Shopping", query: "dubai mall", image: "https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=800&q=80" }
+      { name: "Dubai Mall", description: "Massive shopping and leisure destination", category: "Attraction", query: "dubai mall", image: "https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=800&q=80" }
     ]
   },
   {
@@ -110,7 +110,7 @@ export const destinationsData = [
     image: "https://upload.wikimedia.org/wikipedia/commons/d/d6/London-Eye-2009.JPG",
     bestTime: "May to August",
     recommendedDays: 5,
-    categories: ["History", "Culture", "City"],
+    categories: ["History", "Culture", "City", "Entertainment"],
     coordinates: { lat: 51.5074, lon: -0.1278 },
     famousPlaces: [
       { name: "London Eye", description: "Giant Ferris wheel", category: "Landmark", query: "london eye", image: "https://upload.wikimedia.org/wikipedia/commons/d/d6/London-Eye-2009.JPG" },
@@ -127,7 +127,7 @@ export const destinationsData = [
     image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1200&q=80",
     bestTime: "September to November, or March to May",
     recommendedDays: 6,
-    categories: ["City", "Beach", "Culture"],
+    categories: ["City", "Beach", "Culture", "Relaxation", "Nature"],
     coordinates: { lat: -33.8688, lon: 151.2093 },
     famousPlaces: [
       { name: "Sydney Opera House", description: "Multi-venue performing arts centre", category: "Landmark", query: "sydney opera house", image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80" },
@@ -144,12 +144,29 @@ export const destinationsData = [
     image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80",
     bestTime: "October to March",
     recommendedDays: 14,
-    categories: ["Culture", "History", "Food", "Nature", "Shopping", "City"],
+    categories: ["Culture", "History", "Nature", "City"],
     coordinates: { lat: 28.6139, lon: 77.2090 }, // New Delhi
     famousPlaces: [
       { name: "Taj Mahal", description: "Ivory-white marble mausoleum", category: "Historic Site", query: "taj mahal", image: "https://upload.wikimedia.org/wikipedia/commons/1/1d/Taj_Mahal_%28Edited%29.jpeg" },
       { name: "Jaipur", description: "The Pink City", category: "City", query: "jaipur palace", image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=80" },
       { name: "Kerala Backwaters", description: "Chain of brackish lagoons and lakes", category: "Nature", query: "kerala backwaters", image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80" }
+    ]
+  },
+  {
+    id: "maldives",
+    name: "Maldives",
+    country: "Maldives",
+    description: "Tropical paradise known for its beaches, blue lagoons, and extensive reefs.",
+    imageQuery: "maldives beach",
+    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1200&q=80",
+    bestTime: "November to April",
+    recommendedDays: 6,
+    categories: ["Beach", "Relaxation", "Romance", "Luxury", "Nature"],
+    coordinates: { lat: 3.2028, lon: 73.2207 },
+    famousPlaces: [
+      { name: "Baa Atoll", description: "UNESCO World Biosphere Reserve", category: "Nature", query: "baa atoll", image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80" },
+      { name: "Male", description: "Capital city", category: "City", query: "male maldives", image: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=800&q=80" },
+      { name: "Maafushi", description: "Local island with beautiful beaches", category: "Beach", query: "maafushi", image: "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80" }
     ]
   }
 ];

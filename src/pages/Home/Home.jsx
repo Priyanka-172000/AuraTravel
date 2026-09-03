@@ -4,9 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Compass, Star, Globe, MapPin } from 'lucide-react';
 import { destinationsData } from '../../data/destinations';
 import { fetchImageForQuery } from '../../services/imageService';
+import { useLocationContext } from '../../context/LocationContext';
+import WeatherCard from '../../components/WeatherCard/WeatherCard';
 import styles from './Home.module.css';
 
 const Home = () => {
+  const { currentLocation, isUsingGeolocation } = useLocationContext();
   const navigate = useNavigate();
   const [featuredDests, setFeaturedDests] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -25,6 +28,8 @@ const Home = () => {
     loadDestinations();
   }, []);
 
+  const [nearbyDests, setNearbyDests] = useState([]);
+
   useEffect(() => {
     if (featuredDests.length === 0) return;
     const interval = setInterval(() => {
@@ -32,6 +37,46 @@ const Home = () => {
     }, 4000);
     return () => clearInterval(interval);
   }, [featuredDests.length]);
+
+  // Haversine formula for distance
+  const getDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  };
+
+  useEffect(() => {
+    if (currentLocation && currentLocation.lat && currentLocation.lon) {
+      const withDistance = destinationsData.map(dest => {
+        const distance = getDistance(
+          currentLocation.lat, 
+          currentLocation.lon, 
+          dest.coordinates.lat, 
+          dest.coordinates.lon
+        );
+        return { ...dest, distance };
+      });
+      // Sort by distance and take top 3
+      withDistance.sort((a, b) => a.distance - b.distance);
+      
+      const loadNearbyImages = async () => {
+        const enriched = await Promise.all(withDistance.slice(0, 3).map(async (dest) => {
+          const img = await fetchImageForQuery(dest.imageQuery);
+          return { ...dest, imageUrl: img };
+        }));
+        setNearbyDests(enriched);
+      };
+      loadNearbyImages();
+    } else {
+      setNearbyDests([]);
+    }
+  }, [currentLocation]);
 
   return (
     <div className={styles.home}>
@@ -43,10 +88,11 @@ const Home = () => {
             loop 
             muted 
             playsInline
+            preload="auto"
             className={styles.heroImg}
             poster="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
           >
-            <source src="/videos/hero-travel.mp4" type="video/mp4" />
+            <source src="/videos/travel-hero.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <div className={styles.overlay}></div>
@@ -136,6 +182,56 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Location Awareness Section */}
+      {currentLocation && (
+        <section className={styles.nearbySection}>
+          <div className="container">
+            <div className={styles.locationHeader}>
+              <div className={styles.locationTitle}>
+                <MapPin size={28} className={styles.locationIcon} />
+                <h2>You're exploring {currentLocation.city || currentLocation.country}</h2>
+              </div>
+              <p>Discover weather and personalized travel recommendations near you.</p>
+            </div>
+
+            <div className={styles.locationContent}>
+              <div className={styles.weatherWrapper}>
+                <WeatherCard 
+                  lat={currentLocation.lat} 
+                  lon={currentLocation.lon} 
+                  locationName={currentLocation.city || currentLocation.country || "Your Location"} 
+                />
+              </div>
+
+              <div className={styles.nearbyPlaces}>
+                <h3>Recommended Nearby Destinations</h3>
+                {nearbyDests.length > 0 ? (
+                  <div className={styles.nearbyGrid}>
+                    {nearbyDests.map(dest => (
+                      <div 
+                        key={dest.id} 
+                        className={styles.nearbyCard}
+                        onClick={() => navigate(`/destination/${dest.id}`)}
+                      >
+                        <img src={dest.imageUrl || dest.image} alt={dest.name} />
+                        <div className={styles.nearbyInfo}>
+                          <h4>{dest.name}{dest.country && dest.country !== dest.name ? `, ${dest.country}` : ''}</h4>
+                          <span className={styles.distanceBadge}>
+                            {Math.round(dest.distance)} km away
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p>Loading nearby places...</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Features Section */}
       <section className={styles.features}>

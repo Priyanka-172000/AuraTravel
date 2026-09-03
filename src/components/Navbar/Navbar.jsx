@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Menu, X, Compass, MapPin, Loader2 } from 'lucide-react';
-import useGeolocation from '../../hooks/useGeolocation';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, Compass, MapPin, Loader2, Search } from 'lucide-react';
+import { useLocationContext } from '../../context/LocationContext';
 import WeatherCard from '../WeatherCard/WeatherCard';
 import styles from './Navbar.module.css';
 
@@ -9,8 +9,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const { location: geoLoc, error, loading, requestLocation } = useGeolocation();
+  const [searchQuery, setSearchQuery] = useState('');
+  
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
 
   useEffect(() => {
@@ -23,9 +25,23 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  const { 
+    currentLocation: displayLoc, 
+    isLoading: isDisplayLoading, 
+    error: displayError, 
+    requestLocation, 
+    handleSearchLocation: contextHandleSearch, 
+    clearSearch 
+  } = useLocationContext();
+
   const handleLocationClick = () => {
     setShowLocationModal(true);
-    requestLocation();
+  };
+
+  const handleSearchSubmit = async (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    await contextHandleSearch(searchQuery);
   };
 
   return (
@@ -62,7 +78,7 @@ const Navbar = () => {
             
             <button className={styles.locationBtn} onClick={handleLocationClick} aria-label="Use My Location">
               <MapPin size={18} />
-              <span>Near Me</span>
+              <span>Location / Weather</span>
             </button>
           </nav>
 
@@ -82,51 +98,82 @@ const Navbar = () => {
             <button className={styles.closeModal} onClick={() => setShowLocationModal(false)}>
               <X size={20} />
             </button>
-            <h3>Your Location</h3>
+            <h3>Location & Weather</h3>
+
+            <form onSubmit={handleSearchSubmit} className={styles.searchForm}>
+              <input
+                type="text"
+                placeholder="Search for a city..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={styles.searchInput}
+              />
+              <button type="submit" className={styles.searchBtn} disabled={isDisplayLoading}>
+                <Search size={18} />
+              </button>
+            </form>
+
+            <div className={styles.divider}>OR</div>
+
+            <button 
+              className={styles.useMyLocBtn} 
+              onClick={() => {
+                clearSearch();
+                requestLocation();
+              }}
+            >
+              <MapPin size={18} /> Use My Current Location
+            </button>
             
-            {loading && (
+            {isDisplayLoading && (
               <div className={styles.modalLoading}>
                 <Loader2 size={32} className={styles.spinner} />
-                <p>Getting your location...</p>
+                <p>Loading location details...</p>
               </div>
             )}
             
-            {error && (
+            {displayError && (
               <div className={styles.modalError}>
-                <p className={styles.errorText}>{error}</p>
-                <p>Please search for a destination manually.</p>
-                <Link to="/destinations" className={styles.modalBtn} onClick={() => setShowLocationModal(false)}>
-                  Go to Destinations
-                </Link>
+                <p className={styles.errorText}>{displayError}</p>
+                {displayError.includes('not found') && (
+                  <div className={styles.errorActions}>
+                    <p style={{ marginBottom: '10px', fontSize: '14px', color: '#666' }}>
+                      We can still help you plan a trip there!
+                    </p>
+                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                      <button 
+                        className={styles.contactBtn} 
+                        onClick={() => { setShowLocationModal(false); navigate('/contact'); }}
+                      >
+                        Contact Us
+                      </button>
+                      <button 
+                        className={styles.aiBtn} 
+                        onClick={() => { setShowLocationModal(false); navigate('/planner'); }}
+                      >
+                        Ask AI Assistant
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
             
-            {geoLoc && !loading && !error && (
+            {displayLoc && !isDisplayLoading && !displayError && (
               <div className={styles.modalLocationResult}>
-                {geoLoc.country ? (
-                  <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-                    <p style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--color-primary)' }}>
-                      {geoLoc.city ? `${geoLoc.city}, ` : ''}{geoLoc.country}
-                    </p>
-                  </div>
-                ) : (
-                  <p style={{ marginBottom: '20px' }}>Unable to detect your exact location. Please select a destination manually.</p>
-                )}
-                
-                <div className={styles.modalWeather}>
-                  <WeatherCard lat={geoLoc.lat} lon={geoLoc.lon} locationName={geoLoc.city && geoLoc.country ? `${geoLoc.city}, ${geoLoc.country}` : geoLoc.city || geoLoc.country || "Your Location"} />
+                <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+                  <p style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--color-primary)' }}>
+                    {displayLoc.city || 'Unknown'}, {displayLoc.country || ''}
+                  </p>
                 </div>
                 
-                {geoLoc.country && geoLoc.country.toLowerCase() === 'india' && (
-                  <Link 
-                    to="/destination/india" 
-                    className={styles.modalBtn}
-                    onClick={() => setShowLocationModal(false)}
-                    style={{ marginTop: '20px', display: 'block', textAlign: 'center' }}
-                  >
-                    View India Travel Guide
-                  </Link>
-                )}
+                <div className={styles.modalWeather}>
+                  <WeatherCard 
+                    lat={displayLoc.lat} 
+                    lon={displayLoc.lon} 
+                    locationName={displayLoc.city || displayLoc.country || "Selected Location"} 
+                  />
+                </div>
               </div>
             )}
           </div>

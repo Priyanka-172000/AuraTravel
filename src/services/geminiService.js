@@ -1,37 +1,25 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-
-let genAI = null;
-if (GEMINI_API_KEY) {
-  genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-}
-
 export const generateItinerary = async (destination, days, interests) => {
-  if (!genAI) {
-    throw new Error("Gemini API key is missing");
-  }
-
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-  const prompt = `Create a detailed ${days}-day travel itinerary for ${destination}. 
-  The user is interested in: ${interests || 'general sightseeing'}.
-  Please format the response EXACTLY as a JSON array where each item represents a day.
-  Example format:
-  [
-    {
-      "day": 1,
-      "morning": "Activity description",
-      "afternoon": "Activity description",
-      "evening": "Activity description"
-    }
-  ]
-  Return ONLY the JSON array, no markdown formatting (like \`\`\`json) or extra text.`;
-
   try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    let text = response.text().trim();
+    const response = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: 'generateItinerary',
+        destination,
+        days,
+        interests,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || 'Failed to fetch from Gemini API');
+    }
+
+    const data = await response.json();
+    let text = data.text.trim();
     
     // Safely extract JSON array if surrounded by markdown or other text
     const jsonStart = text.indexOf('[');
@@ -42,29 +30,34 @@ export const generateItinerary = async (destination, days, interests) => {
     
     return JSON.parse(text);
   } catch (error) {
+    console.error("Itinerary generation error:", error);
     throw error;
   }
 };
 
 export const chatWithAssistant = async (message, history = []) => {
-  if (!genAI) {
-    throw new Error("Gemini API key is missing");
-  }
-
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
   try {
-    const chat = model.startChat({
-      history: history,
-      generationConfig: {
-        maxOutputTokens: 500,
+    const response = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        action: 'chatWithAssistant',
+        message,
+        history,
+      }),
     });
 
-    const result = await chat.sendMessage(message);
-    const response = await result.response;
-    return response.text();
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || 'Failed to fetch from Gemini API');
+    }
+
+    const data = await response.json();
+    return data.text;
   } catch (error) {
+    console.error("Chat error:", error);
     throw error;
   }
 };

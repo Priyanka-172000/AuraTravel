@@ -41,7 +41,43 @@ src/
 ├── data/           # Mock destination dataset
 ├── App.jsx         # Main router setup
 └── main.jsx        # Entry point
+
 ```
+
+Screenshots/
+screenshots/
+├── home.png
+├── destinations.png
+├── destination-details.png
+├── AI_planner.png
+├── chatbot.png
+└── location_weather.png
+
+## Screenshots
+
+### Home Page
+
+![alt text](screenshots/home.png)
+
+### Destinations
+
+![alt text](screenshots/destinations.png)
+
+### Destination Details
+
+![alt text](screenshots/Destination_details.png)
+
+### AI Trip Planner
+
+![alt text](screenshots/AI_planner.png)
+
+### AI Travel Assistant
+
+![alt text](screenshots/Chatbot.png)
+
+### Location Awareness
+
+![alt text](screenshots/location_Weather.png)
 
 ## How to Install
 
@@ -57,16 +93,16 @@ src/
 
 ## Environment Variables
 
-This project requires API keys to function correctly. 
+This project requires API keys to function correctly.
 
 1. Create a `.env.local` file in the root directory.
 2. Add the following variables (see `.env.example`):
    ```env
    VITE_UNSPLASH_API_KEY=your_unsplash_api_key_here
-   VITE_WEATHER_API_KEY=your_openweather_api_key_here
-   VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   VITE_OPENWEATHER_API_KEY=your_openweather_api_key_here
+   GEMINI_API_KEY=your_gemini_api_key_here
    ```
-*Note: Do not commit your `.env.local` file to version control.*
+   _Note: Do not commit your `.env.local` file to version control._
 
 ## How to Run Locally
 

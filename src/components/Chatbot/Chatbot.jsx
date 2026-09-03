@@ -4,10 +4,7 @@ import { chatWithAssistant } from '../../services/geminiService';
 import styles from './Chatbot.module.css';
 
 const Chatbot = () => {
-  const isKeyMissing = !import.meta.env.VITE_GEMINI_API_KEY;
-  const initialMessage = isKeyMissing 
-    ? "Hi there! I'm your AI travel assistant. (Demo Mode: I can help with basic questions about our destinations!)"
-    : "Hi there! I'm your AI travel assistant. Where would you like to go?";
+  const initialMessage = "Hi there! I'm your AI travel assistant. Where would you like to go?";
     
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -35,19 +32,6 @@ const Chatbot = () => {
     setMessages(newMessages);
     setIsLoading(true);
 
-    if (isKeyMissing) {
-      setTimeout(() => {
-        let reply = "I'm currently in demo mode, but I recommend checking out our Destinations page to see beautiful places like Paris, Tokyo, and Bali!";
-        if (userMessage.toLowerCase().includes("paris")) reply = "Paris is beautiful! The Eiffel Tower and Louvre are must-sees. Best time to visit is Spring.";
-        else if (userMessage.toLowerCase().includes("tokyo")) reply = "Tokyo is amazing! Don't miss the Shibuya Crossing and Senso-ji Temple.";
-        else if (userMessage.toLowerCase().includes("bali")) reply = "Bali is perfect for relaxation. Visit the rice terraces and beautiful temples.";
-        
-        setMessages([...newMessages, { role: 'model', parts: [{ text: reply }] }]);
-        setIsLoading(false);
-      }, 1000);
-      return;
-    }
-
     try {
       const historyForApi = messages.slice(1).map(m => ({ role: m.role, parts: [...m.parts] }));
       const responseText = await chatWithAssistant(userMessage, historyForApi);
@@ -58,6 +42,7 @@ const Chatbot = () => {
       setIsLoading(false);
     }
   };
+
 
   return (
     <>
@@ -73,7 +58,7 @@ const Chatbot = () => {
         <div className={styles.header}>
           <div>
             <h3>AI Travel Assistant</h3>
-            <span className={styles.status}>{isKeyMissing ? 'Demo Mode' : 'Online'}</span>
+            <span className={styles.status}>Online</span>
           </div>
           <div className={styles.headerActions}>
             <button onClick={() => setMessages([{ role: 'model', parts: [{ text: initialMessage }] }])} aria-label="Reset chat">
