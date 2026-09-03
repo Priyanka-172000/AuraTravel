@@ -76,21 +76,24 @@ const genericFallbacks = [
 ];
 
 const getFallbackForQuery = (query) => {
-  if (fallbackImages[query]) return fallbackImages[query];
+  const safeQuery = query ? String(query).toLowerCase() : '';
+  if (fallbackImages[safeQuery]) return fallbackImages[safeQuery];
   // Deterministic random image based on string length to avoid all identical images
-  const index = query.length % genericFallbacks.length;
+  const index = safeQuery.length % genericFallbacks.length;
   return genericFallbacks[index];
 };
 
 export const fetchImageForQuery = async (query) => {
+  const safeQuery = query ? String(query) : 'travel destination';
+  
   if (!UNSPLASH_API_KEY) {
-    return getFallbackForQuery(query);
+    return getFallbackForQuery(safeQuery);
   }
   
   try {
     const response = await axios.get(`${BASE_URL}/search/photos`, {
       params: {
-        query,
+        query: safeQuery,
         per_page: 1,
         orientation: 'landscape'
       },

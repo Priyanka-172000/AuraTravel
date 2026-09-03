@@ -54,7 +54,15 @@ const AIPlanner = () => {
       const enrichedData = await loadItineraryImages(data);
       setItinerary(enrichedData);
     } catch (err) {
-      setError("We couldn't generate your itinerary at this time. Please try again.");
+      console.warn("Gemini API failed, falling back to mock itinerary...", err);
+      try {
+        const fallbackData = getMockItinerary(formData.destination, parseInt(formData.days));
+        const enrichedFallback = await loadItineraryImages(fallbackData);
+        setItinerary(enrichedFallback);
+      } catch (mockErr) {
+        console.error("Mock fallback also failed:", mockErr);
+        setError(`We couldn't generate your itinerary at this time. Please try again. (${err.message})`);
+      }
     } finally {
       setLoading(false);
     }

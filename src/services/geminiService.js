@@ -21,14 +21,32 @@ export const generateItinerary = async (destination, days, interests) => {
     const data = await response.json();
     let text = data.text.trim();
     
-    // Safely extract JSON array if surrounded by markdown or other text
-    const jsonStart = text.indexOf('[');
-    const jsonEnd = text.lastIndexOf(']');
+    // Attempt to extract JSON array
+    let jsonStart = text.indexOf('[');
+    let jsonEnd = text.lastIndexOf(']');
+    
+    // If no array found, try to find an object and see if it contains an itinerary array
+    if (jsonStart === -1 || jsonEnd === -1) {
+      jsonStart = text.indexOf('{');
+      jsonEnd = text.lastIndexOf('}');
+    }
+
     if (jsonStart !== -1 && jsonEnd !== -1) {
       text = text.substring(jsonStart, jsonEnd + 1);
     }
     
-    return JSON.parse(text);
+    const parsed = JSON.parse(text);
+    
+    // If the model wrapped it in an object like { "itinerary": [...] }
+    if (parsed && !Array.isArray(parsed)) {
+      const arrayVals = Object.values(parsed).find(val => Array.isArray(val));
+      if (arrayVals) {
+        return arrayVals;
+      }
+      throw new Error("Returned JSON was not an array format as requested.");
+    }
+
+    return parsed;
   } catch (error) {
     console.error("Itinerary generation error:", error);
     throw error;
