@@ -83,9 +83,9 @@ screenshots/
 
 1. **Clone the repository** (or download the files).
 2. **Navigate to the project directory**:
-   ```bash
-   cd DesignEsthetics_Travel_App
-   ```
+   ````bash
+   cd AuraTravel   ```
+   ````
 3. **Install dependencies**:
    ```bash
    npm install
